@@ -18,25 +18,38 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav col nav justify-content-end">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Профиль
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Мои объявления</a></li>
-                        <li><a class="dropdown-item" href="#">Изменить личные данные</a></li>
-                        <li><a class="dropdown-item" href="#">Изменить пароль</a></li>
-                        <li><a class="dropdown-item" href="#">Выйти</a></li>
-                        <li><a class="dropdown-item" href="#">Удалить</a></li>
-                    </ul>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Профиль
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Мои объявления</a></li>
+                            <li><a class="dropdown-item" href="{% url "change_profile" %}">Изменить
+                                личные данные</a></li>
+                            <li><a class="dropdown-item" href="#">Изменить пароль</a></li>
+                            <li><a class="dropdown-item" href="#">Выйти</a></li>
+                            <li><a class="dropdown-item" href="#">Удалить</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "login" %}">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Регистрация</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Регистрация</a>
+                    <a class="nav-link" href="{% url "other_page" page="about" %}">О сайте</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Вход</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "logout" %}">Выход</a>
+                    </li>
+                {% endif %}
+
             </ul>
         </div>
     </div>
@@ -64,7 +77,7 @@
         </nav>
     </div>
     <div class="col-10">
-        <section class="col border py-2">
+        <section class="col  py-2">
             {% block content %}
             {% endblock %}
         </section>
