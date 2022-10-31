@@ -1,0 +1,22 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    Удаление аккаунта
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <div class="alert alert-danger" role="alert">
+                    <h5>Удаление пользователя {{ user.username }}.
+                        <p>Вы уверены, что хотите удалить аккаунт?</p></h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

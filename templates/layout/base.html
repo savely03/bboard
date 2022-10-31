@@ -28,9 +28,9 @@
                             <li><a class="dropdown-item" href="{% url 'profile' %}">Мои объявления</a></li>
                             <li><a class="dropdown-item" href="{% url "change_profile" %}">Изменить
                                 личные данные</a></li>
-                            <li><a class="dropdown-item" href="#">Изменить пароль</a></li>
-                            <li><a class="dropdown-item" href="#">Выйти</a></li>
-                            <li><a class="dropdown-item" href="#">Удалить</a></li>
+                            <li><a class="dropdown-item" href="{% url "change_password" %}">Изменить пароль</a></li>
+                            <li><a class="dropdown-item" href="{% url "logout" %}">Выйти</a></li>
+                            <li><a class="dropdown-item" href="{% url "delete" pk=user.id %}">Удалить</a></li>
                         </ul>
                     </li>
                 {% else %}
@@ -38,7 +38,7 @@
                         <a class="nav-link" href="{% url "login" %}">Вход</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Регистрация</a>
+                        <a class="nav-link" href="{% url "register" %}">Регистрация</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">

@@ -1,0 +1,53 @@
+{% extends 'layout/base.html' %}
+{% load widget_tweaks %}
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Регистрация</h2>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Имя пользователя</label>
+                        {% render_field form.username id="username" class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Имя</label>
+                        {% render_field form.first_name id="first_name" class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Фамилия</label>
+                        {% render_field form.last_name id="last_name" class="form-control" %}
+                    </div>
+                    <p>Отправка уведомлений: {{ form.send_messages }}</p>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        {% render_field form.email id="email" class="form-control" type="email" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Пароль</label>
+                        {% render_field form.password1 id="password1" class="form-control" type="password" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Повторите пароль</label>
+                        {% render_field form.password2 id="password2" class="form-control" type="password" %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
