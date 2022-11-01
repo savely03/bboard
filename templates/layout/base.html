@@ -29,8 +29,8 @@
                             <li><a class="dropdown-item" href="{% url "change_profile" %}">Изменить
                                 личные данные</a></li>
                             <li><a class="dropdown-item" href="{% url "change_password" %}">Изменить пароль</a></li>
-                            <li><a class="dropdown-item" href="{% url "logout" %}">Выйти</a></li>
                             <li><a class="dropdown-item" href="{% url "delete" pk=user.id %}">Удалить</a></li>
+                            <li><a class="dropdown-item" href="{% url "logout" %}">Выйти</a></li>
                         </ul>
                     </li>
                 {% else %}
