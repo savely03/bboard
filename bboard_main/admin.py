@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import AvdUser
+from .models import AvdUser, SubRubric, SuperRubric, Bb, AdditionalImage
+from .forms import SubRubricForm
 
 
 class AdvUserAdmin(admin.ModelAdmin):
@@ -16,4 +17,32 @@ class AdvUserAdmin(admin.ModelAdmin):
     readonly_fields = ('last_login', 'date_joined')
 
 
+class SubRubricInline(admin.TabularInline):
+    model = SubRubric
+
+
+class SuperRubricAdmin(admin.ModelAdmin):
+    inlines = (SubRubricInline,)
+
+
+class SubRubricAdmin(admin.ModelAdmin):
+    form = SubRubricForm
+
+
+class AdditionalInline(admin.TabularInline):
+    model = AdditionalImage
+
+
+class BbAdmin(admin.ModelAdmin):
+    list_display = ('rubric', 'title', 'content', 'author', 'created_at')
+    list_display_links = ('rubric', 'title')
+    inlines = (AdditionalInline,)
+
+
+admin.site.register(SuperRubric, SuperRubricAdmin)
+
 admin.site.register(AvdUser, AdvUserAdmin)
+
+admin.site.register(SubRubric, SubRubricAdmin)
+
+admin.site.register(Bb, BbAdmin)

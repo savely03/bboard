@@ -59,21 +59,16 @@
     <div class="col-2">
         <nav class="col-md-auto nav flex-column border">
             <h5><a class="nav-link root font-weight-bold" href="{% url "index" %}">Главная</a></h5>
-            <span class="nav-link root font-weight-bold"><strong>Heдвижимость</strong></span>
-            <div class="container">
-                <div class="row">
-                    <a class="nav-link" href="#">Жилье</a>
-                    <a class="nav-link" href="#">Склады</a>
-                    <a class="nav-link" href="#">Гаражи</a>
+            {% for rubric in rubrics %}
+                <span class="nav-link root font-weight-bold"><strong>{{ rubric.name }}</strong></span>
+                <div class="container">
+                    {% for sub_rubric in rubric.sub_rubrics.all %}
+                        <div class="row">
+                            <a class="nav-link" href="{% url "by_rubric" pk=sub_rubric.pk %}">{{ sub_rubric.name }}</a>
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-            <span class="nav-link root font-weight-bold" href="#"><strong>Транспорт</strong></span>
-            <div class="container">
-                <div class="row">
-                    <a class="nav-link" href="#">Легковой</a>
-                    <a class="nav-link" href="#">Грузовики</a>
-                </div>
-            </div>
+            {% endfor %}
         </nav>
     </div>
     <div class="col-10">

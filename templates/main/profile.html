@@ -15,4 +15,32 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <h2>Ваши активные объявления
+            <a href="{% url "add" %}">
+                <button type="button" class="btn btn-primary">Добавить объявление</button>
+            </a>
+        </h2>
+        <br>
+        {% for bb in bbs %}
+            <div class="card mb-2" style="max-width: 900px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <a href="{% url "detail" pk=bb.pk %}"><img src="{% if bb.image %}{{ bb.image.url }}{% endif %}"
+                                                                   class="img-fluid rounded-start"
+                                                                   alt="Фотография еще не добавлена"></a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <a href="{% url "detail" pk=bb.pk %}"><h5 class="card-title">{{ bb.title }}</h5></a>
+                            <p class="card-text">{{ bb.content }}</p>
+                            <p class="card-text">Цена: {{ bb.price }} руб.</p>
+                            <p class="card-text"><small class="text-muted">Добавлено: {{ bb.created_at }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

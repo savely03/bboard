@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template
 from django.http import Http404, HttpResponse
 from django.template import TemplateDoesNotExist
@@ -7,14 +7,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .forms import AvdUserForm
-from .models import AvdUser
+from .forms import AvdUserForm, SearchForm, BbForm, AiFormSet
+from .models import AvdUser, SubRubric, Bb
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView
 from .forms import RegisterUserForm
 from django.views.generic import DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -82,4 +84,43 @@ def change_user_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'main/profile.html')
+    bbs = Bb.objects.filter(author=request.user.pk, is_active=True)
+    return render(request, 'main/profile.html', context={'bbs': bbs})
+
+
+def profile_bb_detail(request):
+    pass
+
+
+@login_required
+def profile_bb_add(request):
+    form = BbForm()
+    formset = AiFormSet()
+    if request.method == 'POST':
+        form = BbForm(request.POST, request.FILES)
+        if form.is_valid():
+            bb = form.save()
+            formset = AiFormSet(request.POST, request.FILES, instance=bb)
+            if formset.is_valid():
+                messages.success(request, 'Сообщение успешно добавлено')
+            return redirect('profile')
+    return render(request, 'main/profile_bb_add.html', context={'form': form, 'formset': formset})
+
+
+def by_rubric(request, pk):
+    rubric = get_object_or_404(SubRubric, pk=pk)
+    bbs = Bb.objects.filter(is_active=True, rubric=pk)
+    paginator = Paginator(bbs, 2)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page_obj = paginator.get_page(page_num)
+    context = {'rubric': rubric, 'page': page_obj, 'bbs': page_obj.object_list}
+    return render(request, 'main/by_rubric.html', context=context)
+
+
+def detail(request, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    return render(request, 'main/detail.html', context={'bb': bb, 'ais': ais})

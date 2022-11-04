@@ -1,0 +1,76 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    {{ rubric }}
+{% endblock %}
+
+{% block content %}
+    <div class="alert alert-light" role="alert">
+        <h5>{{ rubric }}</h5>
+        <hr/>
+    </div>
+    <div class="container">
+        {% for bb in bbs %}
+            <div class="card mb-2" style="max-width: 900px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <a href="{% url "detail" pk=bb.pk %}"><img src="{% if bb.image %}{{ bb.image.url }}{% endif %}"
+                                                                   class="img-fluid rounded-start"
+                                                                   alt="Фотография еще не добавлена"></a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <a href="{% url "detail" pk=bb.pk %}"><h5 class="card-title">{{ bb.title }}</h5></a>
+                            <p class="card-text">{{ bb.content }}</p>
+                            <p class="card-text">Цена: {{ bb.price }} руб.</p>
+                            <p class="card-text"><small class="text-muted">Добавлено: {{ bb.created_at }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        {% if bbs %}
+            <hr/>
+        {% endif %}
+    </div>
+
+
+    <div class="container">
+        <ul class="pagination">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% if page.number|add:'-3' > 1 %}
+                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                {% endif %}
+            {% endif %}
+            {% if page.paginator.page_range|length > 1 %}
+                {% for p in page.paginator.page_range %}
+                    {% if page.number == p %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% elif p > page.number|add:"-4" and p < page.number|add:"4" %}
+                        <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% if page.number|add:"3" < page.paginator.num_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page.paginator.num_pages }}">{{ page.paginator.num_pages }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
