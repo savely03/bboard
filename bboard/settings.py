@@ -133,16 +133,5 @@ MESSAGE_TAGS = {
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 
-THUMBNALL_ALIASES = {
-    '': {
-        'default': {
-            'size': (96, 96),
-            'crop': 'scale',
-        }
-    }
-}
-
-THUMBNALL_BASEDIR = 'thumbnails'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

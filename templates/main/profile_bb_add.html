@@ -1,20 +1,25 @@
 {% extends 'layout/base.html' %}
-
+{% load widget_tweaks %}
 {% block title %}
     Добавление нового объявления
 {% endblock %}
 
 {% block content %}
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <h4 class="{{ message.tags }}">{{ message }}</h4>
+                <br>
+                <a href="{% url "profile" %}">
+                    <button type="button" class="btn btn-primary">Вернуться в профиль</button>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container">
+            <h4 class="text-primary">Добавление нового объявления</h4>
+            <br>
+            {% include 'includes/profile_bb_change_add.html' %}
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    {% endif %}
 {% endblock %}

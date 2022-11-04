@@ -1,0 +1,54 @@
+{% load widget_tweaks %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="rubric" class="form-label">Рубрика</label>
+                {% render_field form.rubric class="form-control" id="rubric" %}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="title" class="form-label">Заголовок</label>
+                {% render_field form.title class="form-control" id="title" %}
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="content" class="form-label">Описание</label>
+                {% render_field form.content class="form-control" id="content" %}
+            </div>
+        </div>
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="contacts" class="form-label">Ваши контакты (тел., email)</label>
+                {% render_field form.contacts class="form-control" id="contacts" %}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="price" class="form-label">Цена, руб.</label>
+                {% render_field form.price class="form-control" id="price" %}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="image" class="form-label">Фотография</label>
+                {% render_field form.image class="form-control" id="image" %}
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="mb-3">
+                <label for="is_active" class="form-label">Выводить объявление в списке?</label>
+                {{ form.is_active }}
+            </div>
+        </div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-primary">Добавить объявление</button>
+        </div>
+    </div>
+</form>

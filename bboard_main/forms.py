@@ -3,7 +3,6 @@ from django.forms import inlineformset_factory
 from .models import AvdUser, Bb, AdditionalImage
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
 from .models import SuperRubric, SubRubric
 
 
@@ -67,11 +66,7 @@ class SearchForm(forms.Form):
 class BbForm(forms.ModelForm):
     class Meta:
         model = Bb
-        fields = '__all__'
-        widgets = {'author': forms.HiddenInput}
+        exclude = ('author',)
 
 
 AiFormSet = inlineformset_factory(Bb, AdditionalImage, fields='__all__')
-
-
-

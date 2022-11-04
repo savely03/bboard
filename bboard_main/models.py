@@ -52,7 +52,7 @@ class Bb(models.Model):
     title = models.CharField(max_length=50, verbose_name='Название товара')
     content = models.TextField(verbose_name='Описание товара')
     price = models.PositiveIntegerField(default=0, verbose_name='Цена товара')
-    contacts = models.TextField(verbose_name='Контакты')
+    contacts = models.CharField(max_length=50, verbose_name='Контакты')
     image = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='Основная иллюстрация к объявлению')
     author = models.ForeignKey(AvdUser, on_delete=models.CASCADE, related_name='bbs', verbose_name='Автор объявления')
     is_active = models.BooleanField(default=True, db_index=True, verbose_name='Выводить в списке?')

@@ -1,0 +1,77 @@
+{% extends 'layout/base.html' %}
+{% load widget_tweaks %}
+{% block title %}
+    Изменение объявления
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <h4 class="{{ message.tags }}">{{ message }}</h4>
+                <br>
+                <a href="{% url "profile" %}">
+                    <button type="button" class="btn btn-primary">Вернуться в профиль</button>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container-fluid">
+            <h4 class="text-primary">Изменение объявления</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label for="rubric" class="form-label">Рубрика</label>
+                            {% render_field form.rubric class="form-control" id="rubric" %}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label for="title" class="form-label">Заголовок</label>
+                            {% render_field form.title class="form-control" id="title" %}
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="mb-2">
+                            <label for="content" class="form-label">Описание</label>
+                            {% render_field form.content class="form-control" id="content" %}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label for="contacts" class="form-label">Ваши контакты (тел., email)</label>
+                            {% render_field form.contacts class="form-control" id="contacts" %}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label for="price" class="form-label">Цена, руб.</label>
+                            {% render_field form.price class="form-control" id="price" %}
+                        </div>
+                    </div>
+                    <div class="col-2">
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label for="image" class="form-label">Фотография</label>
+                            {% render_field form.image class="form-control" id="image" %}
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="mb-2">
+                            <label for="is_active" class="form-label">Выводить объявление в списке?</label>
+                            {{ form.is_active }}
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary">Изменить объявление</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .forms import AvdUserForm, SearchForm, BbForm, AiFormSet
+from .forms import AvdUserForm, BbForm, AiFormSet
 from .models import AvdUser, SubRubric, Bb
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -15,7 +15,6 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm
 from django.views.generic import DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Q
 from django.core.paginator import Paginator
 
 
@@ -85,7 +84,13 @@ def change_user_view(request):
 @login_required
 def profile(request):
     bbs = Bb.objects.filter(author=request.user.pk, is_active=True)
-    return render(request, 'main/profile.html', context={'bbs': bbs})
+    paginator = Paginator(bbs, 3)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page_obg = paginator.get_page(page_num)
+    return render(request, 'main/profile.html', context={'bbs': page_obg.object_list, 'page': page_obg})
 
 
 def profile_bb_detail(request):
@@ -99,18 +104,29 @@ def profile_bb_add(request):
     if request.method == 'POST':
         form = BbForm(request.POST, request.FILES)
         if form.is_valid():
-            bb = form.save()
-            formset = AiFormSet(request.POST, request.FILES, instance=bb)
-            if formset.is_valid():
-                messages.success(request, 'Сообщение успешно добавлено')
-            return redirect('profile')
+            bb = form.save(commit=False)
+            bb.author = request.user
+            form.save()
+            messages.success(request, 'Объявление успешно добавлено.')
     return render(request, 'main/profile_bb_add.html', context={'form': form, 'formset': formset})
+
+
+@login_required
+def profile_bb_change(request, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    form = BbForm(instance=bb)
+    if request.method == 'POST':
+        form = BbForm(request.POST, instance=bb)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Объявление успешно изменено.')
+    return render(request, 'main/profile_bb_change.html', context={'form': form})
 
 
 def by_rubric(request, pk):
     rubric = get_object_or_404(SubRubric, pk=pk)
     bbs = Bb.objects.filter(is_active=True, rubric=pk)
-    paginator = Paginator(bbs, 2)
+    paginator = Paginator(bbs, 3)
     if 'page' in request.GET:
         page_num = request.GET['page']
     else:

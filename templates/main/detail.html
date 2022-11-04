@@ -27,8 +27,11 @@
                             <h5 class="card-title">{{ bb.title }}</h5>
                             <p class="card-text">{{ bb.content }}</p>
                             <p class="font-weight-bold">{{ bb.price }} руб.</p>
-                            <p class="card-text">{{ bb.contacts }}</p>
+                            <p class="card-text">Контакты: {{ bb.contacts }}</p>
                             <p class="card-text"><small class="text-muted">Добавлено: {{ bb.created_at }}</small></p>
+                            <a href="{% url "change" pk=bb.pk %}">
+                                <button type="button" class="btn btn-primary">Изменить</button>
+                            </a>
                         </div>
                     </div>
                 </div>
