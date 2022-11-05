@@ -6,10 +6,13 @@
 {% block content %}
     {% if messages %}
         {% for message in messages %}
-            <h6 class="text-primary">{{ message }} <a href="{% url "index" %}">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="True">&times;</span>
-                </button>
-            </a></h6>
+            <div class="alert alert-success" role="alert">
+                <h4 class="{{ message.tags }}">{{ message }}</h4>
+                <br>
+                <a href="{% url "profile" %}">
+                    <button type="button" class="btn btn-primary">Вернуться в профиль</button>
+                </a>
+            </div>
         {% endfor %}
     {% endif %}
     <h1>Последние 10 объявлений</h1>

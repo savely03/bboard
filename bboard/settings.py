@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "easy_thumbnails",
     "django_cleanup",
+    "captcha",
 
     "bboard_main",
 

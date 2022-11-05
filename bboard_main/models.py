@@ -79,3 +79,19 @@ class AdditionalImage(models.Model):
     class Meta:
         verbose_name_plural = 'Дополнительные иллюстрации'
         verbose_name = 'Дополнительная иллюстрация'
+
+
+class Comment(models.Model):
+    bb = models.ForeignKey(Bb, on_delete=models.CASCADE, related_name='bbs', verbose_name='Объявление')
+    author = models.CharField(max_length=30, verbose_name='Автор')
+    content = models.TextField(verbose_name='Содержание')
+    is_active = models.BooleanField(default=True, db_index=True, verbose_name='Показывать в списке')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
+
+    def __str__(self):
+        return f'Комментарий к {self.bb.title}'
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('created_at',)

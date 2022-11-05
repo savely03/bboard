@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .forms import AvdUserForm, BbForm, AiFormSet
-from .models import AvdUser, SubRubric, Bb
+from .forms import AvdUserForm, BbForm
+from .models import AvdUser, SubRubric, Bb, Comment
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView
-from .forms import RegisterUserForm
-from django.views.generic import DeleteView
+from .forms import RegisterUserForm, UserCommentForm, GuestCommentForm
+from django.views.generic import DeleteView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
 
@@ -116,8 +116,12 @@ def profile_bb_delete(request, pk):
     if request.method == 'POST':
         if bb:
             bb.delete()
-            messages.success(request, 'Объявление успешно удалено')
+            return redirect('delete_done')
     return render(request, 'main/profile_bb_delete.html', context={'bb': bb})
+
+
+class ProfileDeleteDone(TemplateView):
+    template_name = 'main/profile_bb_delete_done.html'
 
 
 @login_required
@@ -148,4 +152,20 @@ def by_rubric(request, pk):
 def detail(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     ais = bb.additionalimage_set.all()
-    return render(request, 'main/detail.html', context={'bb': bb, 'ais': ais})
+    initial = {'bb': bb.pk}
+    comments = Comment.objects.filter(bb=bb, is_active=True)
+    if request.user.is_authenticated:
+        initial['author'] = request.user.username
+        form_class = UserCommentForm
+    else:
+        form_class = GuestCommentForm
+    form = form_class(initial=initial)
+    if request.method == 'POST':
+        c_form = form_class(request.POST)
+        if c_form.is_valid():
+            c_form.save()
+            messages.success(request, 'Комментарий успешно добавлен.')
+        else:
+            form = c_form
+            messages.error(request, 'Комментарий не добавлен')
+    return render(request, 'main/detail.html', context={'bb': bb, 'ais': ais, 'form': form, 'comments': comments})

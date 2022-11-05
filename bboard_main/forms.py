@@ -1,9 +1,10 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import AvdUser, Bb, AdditionalImage
+from .models import AvdUser, Bb, AdditionalImage, Comment
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from .models import SuperRubric, SubRubric
+from captcha.fields import CaptchaField
 
 
 class AvdUserForm(forms.ModelForm):
@@ -67,6 +68,22 @@ class BbForm(forms.ModelForm):
     class Meta:
         model = Bb
         exclude = ('author',)
+
+
+class UserCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}
+
+
+class GuestCommentForm(forms.ModelForm):
+    captcha = CaptchaField(label='Введите текст с картинки', error_messages={'invalid': 'Неправильный текст'})
+
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}
 
 
 AiFormSet = inlineformset_factory(Bb, AdditionalImage, fields='__all__')

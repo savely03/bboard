@@ -6,30 +6,18 @@
 
 {% block content %}
     <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success" role="alert">
-                    <h4 class="{{ message.tags }}">{{ message }}</h4>
-                    <br>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <div class="alert alert-primary" role="alert">
+                    <h5>Вы действительно хотите удалить объявление:{{ bb.title }}?</h5>
+                    <hr/>
+                    <button type="submit" class="btn btn-danger">Да</button>
                     <a href="{% url "profile" %}">
-                        <button type="button" class="btn btn-primary">Вернуться в профиль</button>
+                        <button type="button" class="btn btn-primary">Нет</button>
                     </a>
                 </div>
-            {% endfor %}
-        {% else %}
-            <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <div class="alert alert-primary" role="alert">
-                        <h5>Вы действительно хотите удалить объявление:{{ bb.title }}?</h5>
-                        <hr/>
-                        <button type="submit" class="btn btn-danger">Да</button>
-                        <a href="{% url "profile" %}">
-                            <button type="button" class="btn btn-primary">Нет</button>
-                        </a>
-                    </div>
-                </div>
-            </form>
-        {% endif %}
+            </div>
+        </form>
     </div>
 {% endblock %}

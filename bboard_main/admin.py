@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AvdUser, SubRubric, SuperRubric, Bb, AdditionalImage
+from .models import AvdUser, SubRubric, SuperRubric, Bb, AdditionalImage, Comment
 from .forms import SubRubricForm
 
 
@@ -39,6 +39,11 @@ class BbAdmin(admin.ModelAdmin):
     inlines = (AdditionalInline,)
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('bb', 'author', 'is_active')
+    list_display_links = ('bb', 'author')
+
+
 admin.site.register(SuperRubric, SuperRubricAdmin)
 
 admin.site.register(AvdUser, AdvUserAdmin)
@@ -46,3 +51,5 @@ admin.site.register(AvdUser, AdvUserAdmin)
 admin.site.register(SubRubric, SubRubricAdmin)
 
 admin.site.register(Bb, BbAdmin)
+
+admin.site.register(Comment, CommentAdmin)

@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    Объявление успешно удалено
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="alert alert-success" role="alert">
+            <h5>Объявление успешно удалено.</h5>
+            <a href="{% url "profile" %}">Вернуться в профиль.</a>
+        </div>
+    </div>
+{% endblock %}

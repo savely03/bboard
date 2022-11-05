@@ -1,50 +1,93 @@
 {% extends 'layout/base.html' %}
-
+{% load widget_tweaks %}
 {% block title %}
     {{ bb.title }} - {{ bb.rubric.name }}
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8 offset-md-4">
-                <h5 class="text-primary">{{ bb.title }}</h5>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <h4 class="{{ message.tags }}">{{ message }}</h4>
+                <br>
+                <a href="{% url "detail" pk=bb.pk %}">
+                    <button type="button" class="btn btn-primary">Вернуться к объявлению</button>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 offset-md-4">
+                    <h5 class="text-primary">{{ bb.title }}</h5>
+                </div>
             </div>
         </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="card mb-3" style="max-height: 800px;">
-                <div class="row g-0">
-                    {% if bb.image %}
-                        <div class="col-md-5">
-                            <img src="{{ bb.image.url }}" class="img-fluid rounded-start" alt="...">
-                        </div>
-                    {% endif %}
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ bb.title }}</h5>
-                            <p class="card-text">{{ bb.content }}</p>
-                            <p class="font-weight-bold">{{ bb.price }} руб.</p>
-                            <p class="card-text">Контакты: {{ bb.contacts }}</p>
-                            <p class="card-text"><small class="text-muted">Добавлено: {{ bb.created_at }}</small></p>
-                            <div class="row">
-                                <div class="col-2">
-                                    <a href="{% url "change" pk=bb.pk %}">
-                                        <button type="button" class="btn btn-primary">Изменить</button>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="{% url "bb_delete" pk=bb.pk %}">
-                                        <button type="button" class="btn btn-danger">Удалить</button>
-                                    </a>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card mb-3" style="max-height: 800px;">
+                    <div class="row g-0">
+                        {% if bb.image %}
+                            <div class="col-md-5">
+                                <img src="{{ bb.image.url }}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                        {% endif %}
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ bb.title }}</h5>
+                                <p class="card-text">{{ bb.content }}</p>
+                                <p class="font-weight-bold">{{ bb.price }} руб.</p>
+                                <p class="card-text">Контакты: {{ bb.contacts }}</p>
+                                <p class="card-text"><small class="text-muted">Добавлено: {{ bb.created_at }}</small>
+                                </p>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <a href="{% url "change" pk=bb.pk %}">
+                                            <button type="button" class="btn btn-primary">Изменить</button>
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{% url "bb_delete" pk=bb.pk %}">
+                                            <button type="button" class="btn btn-danger">Удалить</button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="card" style="width: 70rem;">
+                <div class="card-header">
+                    <h5>Комментарии</h5>
+                </div>
+                {% for comment in comments %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{ comment.author|title }}: {{ comment.content }} <p><small
+                                class="text-muted">Добавлено: {{ comment.created_at }}</small></p></li>
+                    </ul>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-5">
+                    <div class="alert alert-primary" role="alert">
+                        Добавление нового комментария.
+                    </div>
+                </div>
+                <div class="col-5">
+                </div>
+                <div class="col-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
