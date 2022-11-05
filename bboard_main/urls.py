@@ -12,6 +12,7 @@ urlpatterns = [
     path("account/logout/", views.BBLogoutView.as_view(), name='logout'),
     path('accounts/profile/', views.profile, name='profile'),
     path('accounts/profile/add/', views.profile_bb_add, name='add'),
+    path('accounts/profile/delete/<int:pk>/', views.profile_bb_delete, name='bb_delete'),
     path('accounts/profile/change/<int:pk>/', views.profile_bb_change, name='change'),
     path('accounts/profile/<int:pk>/', views.profile_bb_detail, name='profile_bb_detail'),
     path('accounts/profile/change/', views.change_user_view, name='change_profile'),

@@ -100,7 +100,6 @@ def profile_bb_detail(request):
 @login_required
 def profile_bb_add(request):
     form = BbForm()
-    formset = AiFormSet()
     if request.method == 'POST':
         form = BbForm(request.POST, request.FILES)
         if form.is_valid():
@@ -108,7 +107,17 @@ def profile_bb_add(request):
             bb.author = request.user
             form.save()
             messages.success(request, 'Объявление успешно добавлено.')
-    return render(request, 'main/profile_bb_add.html', context={'form': form, 'formset': formset})
+    return render(request, 'main/profile_bb_add.html', context={'form': form})
+
+
+@login_required
+def profile_bb_delete(request, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    if request.method == 'POST':
+        if bb:
+            bb.delete()
+            messages.success(request, 'Объявление успешно удалено')
+    return render(request, 'main/profile_bb_delete.html', context={'bb': bb})
 
 
 @login_required
