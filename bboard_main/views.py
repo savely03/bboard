@@ -16,6 +16,7 @@ from .forms import RegisterUserForm, UserCommentForm, GuestCommentForm
 from django.views.generic import DeleteView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 
 
 def index(request):
@@ -32,6 +33,10 @@ def other_page(request, page):
 
 class BBLoginView(LoginView):
     template_name = 'main/login.html'
+
+
+class BBLogoutConfirmView(TemplateView):
+    template_name = 'main/logout_confirm.html'
 
 
 class BBLogoutView(LoginRequiredMixin, LogoutView):
@@ -151,7 +156,6 @@ def by_rubric(request, pk):
 
 def detail(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
-    ais = bb.additionalimage_set.all()
     initial = {'bb': bb.pk}
     comments = Comment.objects.filter(bb=bb, is_active=True)
     if request.user.is_authenticated:
@@ -163,9 +167,14 @@ def detail(request, pk):
     if request.method == 'POST':
         c_form = form_class(request.POST)
         if c_form.is_valid():
+            if request.user.is_authenticated:
+                subject = 'Добавлен новый комментарий.'
+                message = f'Уважаемый {request.user.username.title()}, ' \
+                          f'вы добавили новый комментарий к объявлению ({bb.title}).'
+                send_mail(subject, message, 'admin@yandex.ru', ['savely.domnikov@yandex.ru'])
             c_form.save()
             messages.success(request, 'Комментарий успешно добавлен.')
         else:
             form = c_form
             messages.error(request, 'Комментарий не добавлен')
-    return render(request, 'main/detail.html', context={'bb': bb, 'ais': ais, 'form': form, 'comments': comments})
+    return render(request, 'main/detail.html', context={'bb': bb, 'form': form, 'comments': comments})

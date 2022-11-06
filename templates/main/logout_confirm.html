@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    Подтверждение выхода
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5">
+                <div class="alert alert-info" role="alert">
+                    <h5>Вы действительно хотите покинуть профиль?</h5>
+                    <div class="row">
+                        <div class="col-2">
+                            <a href="{% url "logout" %}">
+                                <button type="button" class="btn btn-primary">Да</button>
+                            </a>
+                        </div>
+                        <div class="col-2">
+                            <a href="{% url "profile" %}">
+                                <button type="button" class="btn btn-danger">Нет</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

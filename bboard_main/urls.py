@@ -9,6 +9,7 @@ urlpatterns = [
     path('detail/<pk>/', views.detail, name='detail'),
     path("<str:page>/", views.other_page, name='other_page'),
     path("accounts/login/", views.BBLoginView.as_view(), name='login'),
+    path("accounts/logout/confirm/", views.BBLogoutConfirmView.as_view(), name='logout_confirm'),
     path("account/logout/", views.BBLogoutView.as_view(), name='logout'),
     path('accounts/profile/', views.profile, name='profile'),
     path('accounts/profile/add/', views.profile_bb_add, name='add'),
