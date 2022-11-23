@@ -8,6 +8,14 @@
     <div class="alert alert-light" role="alert">
         <h5>{{ rubric }}</h5>
         <hr/>
+        {% if not bbs %}
+            <h6> Объявления по данной рубрике еще не добавлены.</h6>
+            <br>
+            <a href="{% url "add" %}">
+                <button type="button" class="btn btn-primary">Добавить объявление</button>
+            </a>
+            </p>
+        {% endif %}
     </div>
     <div class="container">
         {% for bb in bbs %}
@@ -33,5 +41,7 @@
             <hr/>
         {% endif %}
     </div>
-    {% include "includes/bb_paginator.html" %}
+    {% if bbs %}
+        {% include "includes/bb_paginator.html" %}
+    {% endif %}
 {% endblock %}
