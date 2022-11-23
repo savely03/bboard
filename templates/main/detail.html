@@ -67,6 +67,10 @@
                         <li class="list-group-item">{{ comment.author|title }}: {{ comment.content }} <p><small
                                 class="text-muted">Добавлено: {{ comment.created_at }}</small></p></li>
                     </ul>
+                {% empty %}
+                    <div class="container-fluid">
+                        <h6 class="text-primary">Комментариев пока что нет.</h6>
+                    </div>
                 {% endfor %}
             </div>
         </div>

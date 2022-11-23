@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "django_cleanup",
     "captcha",
+    "rest_framework",
+    "corsheaders",
 
     "bboard_main",
+    "api",
 
 ]
 
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "bboard.urls"
@@ -136,3 +140,6 @@ EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = 'r^api/.*$'
